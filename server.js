@@ -5,11 +5,14 @@ import connectDB from "./config/db.js"; // Custom function to connect to the Mon
 import colors from "@colors/colors"; // Colors library for terminal string styling
 import authRoutes from "./routes/authRoute.js"; // Importing authentication routes
 import cors from "cors"; // Importing CORS for cross-origin requests
-
 import categoryRoutes from "./routes/categoryRoutes.js";
 import productRoutes from "./routes/productRoutes.js";
-
 import path from "path";
+import { fileURLToPath } from "url"; // Import fileURLToPath to handle __dirname
+
+// Configure __dirname
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 // Configure environment variables using dotenv
 dotenv.config();
@@ -29,10 +32,10 @@ app.use(express.static(path.join(__dirname, "./client/build")));
 // Authentication routes
 app.use("/api/v1/auth", authRoutes); // Using auth routes for any requests starting with /api/v1/auth
 
-app.use("/api/v1/category", categoryRoutes);
-app.use("/api/v1/product", productRoutes);
+app.use("/api/v1/category", categoryRoutes); // Category-related routes
+app.use("/api/v1/product", productRoutes); // Product-related routes
 
-// Basic route to serve a welcome message at the root URL
+// Serve React frontend for all other routes
 app.use("*", function (req, res) {
   res.sendFile(path.join(__dirname, "./client/build/index.html"));
 });
